@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" version="1.1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g fill="#4CAF50">
+        <!-- 'i' letter -->
+        <rect x="90" y="60" width="20" height="80"/>
+        <circle cx="100" cy="40" r="10"/>
+        
+        <!-- Decorative elements -->
+        <path d="M50,100 Q100,150 150,100 T250,100" stroke="#4CAF50" stroke-width="8" fill="none"/>
+        <circle cx="100" cy="100" r="40" fill="none" stroke="#4CAF50" stroke-width="8"/>
+    </g>
+</svg> 
