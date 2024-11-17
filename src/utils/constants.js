@@ -52,11 +52,5 @@ export const MENU_ITEMS = [
     name: 'documentary',
     icon: 'photo-video',
     title: '纪录片'
-  },
-  {
-    path: '/children',
-    name: 'children',
-    icon: 'child',
-    title: '动画片'
   }
 ] 

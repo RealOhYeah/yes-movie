@@ -55,11 +55,6 @@ const router = createRouter({
       component: () => import('@/views/channel/DocumentaryView.vue')
     },
     {
-      path: '/children',
-      name: 'children',
-      component: () => import('@/views/channel/ChildrenView.vue')
-    },
-    {
       path: '/:pathMatch(.*)*',
       name: 'notFound',
       component: () => import('@/views/error/NotFound.vue')

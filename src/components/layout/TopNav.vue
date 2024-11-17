@@ -137,6 +137,32 @@ const toggleTheme = () => {
 const unreadCount = computed(() => {
   return notifications.filter(notice => !notice.read).length
 })
+
+// 根据路径获取对应图标
+const getPathIcon = computed(() => {
+  const iconMap = {
+    '/': 'home',
+    '/member': 'user',
+    '/tv': 'tv',
+    '/movie': 'film',
+    '/free': 'gift',
+    '/short': 'video',
+    '/variety': 'theater-masks',
+    '/anime': 'dragon',
+    '/documentary': 'photo-video',
+    '/children': 'child'
+  }
+  return iconMap[route.path] || 'compass'
+})
+
+// 用户信息
+const userInfo = {
+  username: '测试用户',
+  avatar: 'https://www.themoviedb.org/t/p/w500/wojZYXQhvqVFp8QyxQzBKwVkxeX.jpg',
+  online: true,
+  memberLevel: '黄金会员',
+  email: 'user@example.com'
+}
 </script>
 
 <template>
@@ -144,10 +170,12 @@ const unreadCount = computed(() => {
     <div class="nav-left">
       <div class="breadcrumb">
         <div class="icon-wrapper">
-          <font-awesome-icon icon="compass" class="nav-icon pulse" />
+          <font-awesome-icon :icon="getPathIcon" class="nav-icon" />
         </div>
         <div class="path-container">
-          <span class="path-text">{{ currentPath }}</span>
+          <transition name="fade" mode="out-in">
+            <span :key="currentPath" class="path-text">{{ currentPath }}</span>
+          </transition>
         </div>
       </div>
     </div>
@@ -176,7 +204,9 @@ const unreadCount = computed(() => {
               size="small"
               :disabled="unreadCount === 0"
               @click="markAllAsRead"
+              class="mark-read-btn"
             >
+              <font-awesome-icon icon="check-double" class="mark-icon" />
               全部标记为已读
             </el-button>
           </div>
@@ -235,10 +265,13 @@ const unreadCount = computed(() => {
         <div class="user-info">
           <div class="avatar-container">
             <el-avatar :size="36" class="user-avatar">
-              <img src="https://www.themoviedb.org/t/p/w500/wojZYXQhvqVFp8QyxQzBKwVkxeX.jpg" alt="avatar">
+              <img :src="userInfo.avatar" alt="avatar">
+              <div class="avatar-loading">
+                <font-awesome-icon icon="spinner" spin />
+              </div>
             </el-avatar>
-            <div class="avatar-status" title="VIP会员">
-              <font-awesome-icon icon="crown" class="status-icon" />
+            <div class="avatar-status" :class="{ online: userInfo.online }">
+              <font-awesome-icon :icon="userInfo.online ? 'circle' : 'circle-dot'" class="status-icon" />
             </div>
             <div class="avatar-ring"></div>
           </div>
@@ -340,59 +373,71 @@ const unreadCount = computed(() => {
   z-index: 1000;
 }
 
-/* 左侧区域样式 */
+/* 左侧区域样式优化 */
 .nav-left {
   display: flex;
   align-items: center;
-  margin-right: 24px;
+  margin: 0 32px;  /* 增加左右间距 */
 }
 
+/* 路径显示容器样式优化 */
 .breadcrumb {
   position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 8px 16px;
+  padding: 8px 20px;  /* 增加内部间距 */
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 180px;  /* 设置最小宽度 */
   transition: all 0.3s ease;
   
   &:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(76, 175, 80, 0.3);
     transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
 
+/* 图标容器样式优化 */
 .icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 36px;  /* 增加图标容器尺寸 */
+  height: 36px;
   background: rgba(76, 175, 80, 0.1);
-  border-radius: 8px;
+  border-radius: 10px;
+  flex-shrink: 0;  /* 防止图标被压缩 */
   transition: all 0.3s ease;
   
   .nav-icon {
     color: #4CAF50;
     font-size: 18px;
     filter: drop-shadow(0 2px 4px rgba(76, 175, 80, 0.3));
+    transition: transform 0.3s ease;
   }
   
   &:hover {
     background: rgba(76, 175, 80, 0.15);
     transform: scale(1.05);
+    
+    .nav-icon {
+      transform: scale(1.1);
+    }
   }
 }
 
+/* 路径文字容器样式优化 */
 .path-container {
   position: relative;
   overflow: hidden;
   padding: 4px 0;
+  flex: 1;  /* 让文字容器占据剩余空间 */
 }
 
 .path-text {
@@ -401,7 +446,7 @@ const unreadCount = computed(() => {
   font-weight: 500;
   white-space: nowrap;
   text-overflow: ellipsis;
-  max-width: 200px;
+  max-width: none;  /* 移除最大宽度限制 */
   display: block;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   letter-spacing: 0.5px;
@@ -830,21 +875,16 @@ const unreadCount = computed(() => {
   }
   
   .breadcrumb {
-    padding: 6px 12px;
-    gap: 12px;
+    padding: 6px 16px;
+    min-width: 140px;  /* 减小移动端最小宽度 */
   }
   
   .icon-wrapper {
-    width: 28px;
-    height: 28px;
-    
-    .nav-icon {
-      font-size: 16px;
-    }
+    width: 32px;
+    height: 32px;
   }
   
   .path-text {
-    max-width: 150px;
     font-size: 14px;
   }
 }
@@ -1281,5 +1321,142 @@ const unreadCount = computed(() => {
       font-size: 16px;
     }
   }
+}
+
+/* 路径显示样式优化 */
+.breadcrumb {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 20px;  /* 增加内部间距 */
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 180px;  /* 设置最小宽度 */
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(76, 175, 80, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* 图标容器样式优化 */
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;  /* 增加图标容器尺寸 */
+  height: 36px;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 10px;
+  flex-shrink: 0;  /* 防止图标被压缩 */
+  transition: all 0.3s ease;
+  
+  .nav-icon {
+    color: #4CAF50;
+    font-size: 18px;
+    filter: drop-shadow(0 2px 4px rgba(76, 175, 80, 0.3));
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover {
+    background: rgba(76, 175, 80, 0.15);
+    transform: scale(1.05);
+    
+    .nav-icon {
+      transform: scale(1.1);
+    }
+  }
+}
+
+/* 标记已读按钮样式 */
+.mark-read-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  
+  .mark-icon {
+    transition: transform 0.3s ease;
+  }
+  
+  &:not(:disabled):hover {
+    .mark-icon {
+      transform: scale(1.2);
+    }
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* 用户头像样式优化 */
+.avatar-container {
+  position: relative;
+  
+  .avatar-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  &:hover .avatar-loading {
+    opacity: 1;
+  }
+}
+
+.avatar-status {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #2d2d2d;
+  transition: all 0.3s ease;
+  
+  &.online {
+    background: #4CAF50;
+    animation: pulse 2s infinite;
+  }
+  
+  &:not(.online) {
+    background: #909399;
+  }
+  
+  .status-icon {
+    font-size: 8px;
+    color: white;
+  }
+}
+
+/* 路径切换动画 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
 }
 </style> 
