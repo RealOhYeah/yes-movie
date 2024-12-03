@@ -103,7 +103,7 @@ const handleCommand = (command) => {
         }
       ).then(() => {
         router.push('/member?tab=vip')
-      }).catch(() => {})
+      }).catch(() => { })
       break
     case 'logout':
       ElMessageBox.confirm(
@@ -117,7 +117,7 @@ const handleCommand = (command) => {
       ).then(() => {
         ElMessage.success('退出成功')
         // 这里可以添加登出逻辑
-      }).catch(() => {})
+      }).catch(() => { })
       break
   }
 }
@@ -182,89 +182,96 @@ const userInfo = {
 
     <div class="nav-right">
       <!-- 通知中心 -->
+
       <el-popover
         placement="bottom"
         :width="320"
         trigger="click"
         popper-class="notification-popover"
-        style="background-color: #1a1a1a;"
+        style="background-color: #1a1a1a"
       >
         <template #reference>
-          <div class="nav-item notification-icon" :class="{ 'has-new': unreadCount > 0 }">
-            <el-badge :value="unreadCount" :max="99" :hidden="unreadCount === 0">
+          <div
+            class="nav-item notification-icon"
+            :class="{ 'has-new': unreadCount > 0 }"
+          >
+            <el-badge
+              :value="unreadCount"
+              :max="99"
+              :hidden="unreadCount === 0"
+            >
               <font-awesome-icon icon="bell" class="nav-icon" />
             </el-badge>
           </div>
         </template>
 
-        
-        <div style="background-color: #1a1a1a;">
-        <div class="notification-panel"  style="background-color: #1a1a1a;">
-          <div class="notification-header">
-            <h3>通知中心</h3>
-            <el-button 
-              link 
-              type="primary" 
-              size="small"
-              :disabled="unreadCount === 0"
-              @click="markAllAsRead"
-              class="mark-read-btn"
-            >
-              <font-awesome-icon icon="check-double" class="mark-icon" />
-              全部标记为已读
-            </el-button>
-          </div>
-          <div class="notification-list">
-            <template v-if="notifications.length">
-              <div 
-                v-for="notice in notifications" 
-                :key="notice.id" 
-                class="notification-item"
-                :class="{ 
-                  unread: !notice.read,
-                  clickable: notice.link,
-                  'with-hover': notice.link 
-                }"
-                @click="handleNotification(notice)"
+        <div style="background-color: #1a1a1a !important">
+          <div class="notification-panel" style="background-color: #1a1a1a">
+            <div class="notification-header" style="background-color: #1a1a1a">
+              <h3>通知中心</h3>
+              <el-button
+                link
+                type="primary"
+                size="small"
+                :disabled="unreadCount === 0"
+                @click="markAllAsRead"
+                class="mark-read-btn"
               >
-                <div class="notification-icon-wrapper">
-                  <div class="notification-icon" :class="notice.type">
-                    <font-awesome-icon :icon="notice.icon" />
-                    <div class="icon-pulse"></div>
+                <font-awesome-icon icon="check-double" class="mark-icon" />
+                全部标记为已读
+              </el-button>
+            </div>
+            <div class="notification-list">
+              <template v-if="notifications.length">
+                <div
+                  v-for="notice in notifications"
+                  :key="notice.id"
+                  class="notification-item"
+                  :class="{
+                    unread: !notice.read,
+                    clickable: notice.link,
+                    'with-hover': notice.link,
+                  }"
+                  @click="handleNotification(notice)"
+                >
+                  <div class="notification-icon-wrapper">
+                    <div class="notification-icon" :class="notice.type">
+                      <font-awesome-icon :icon="notice.icon" />
+                      <div class="icon-pulse"></div>
+                    </div>
+                  </div>
+                  <div class="notification-content">
+                    <div class="notification-title">
+                      {{ notice.title }}
+                      <el-tag
+                        v-if="!notice.read"
+                        size="small"
+                        effect="dark"
+                        class="unread-tag"
+                      >
+                        新
+                      </el-tag>
+                    </div>
+                    <div class="notification-desc">
+                      {{ notice.description }}
+                    </div>
+                    <div class="notification-time">{{ notice.time }}</div>
                   </div>
                 </div>
-                <div class="notification-content">
-                  <div class="notification-title">
-                    {{ notice.title }}
-                    <el-tag 
-                      v-if="!notice.read" 
-                      size="small" 
-                      effect="dark" 
-                      class="unread-tag"
-                    >
-                      新
-                    </el-tag>
-                  </div>
-                  <div class="notification-desc">{{ notice.description }}</div>
-                  <div class="notification-time">{{ notice.time }}</div>
-                </div>
+              </template>
+              <div v-else class="empty-notifications">
+                <font-awesome-icon icon="bell-slash" />
+                <p>暂无通知</p>
               </div>
-            </template>
-            <div v-else class="empty-notifications">
-              <font-awesome-icon icon="bell-slash" />
-              <p>暂无通知</p>
+            </div>
+            <div class="notification-footer">
+              <el-button link type="primary" size="small">
+                查看全部通知
+                <font-awesome-icon icon="angle-right" />
+              </el-button>
             </div>
           </div>
-          <div class="notification-footer">
-            <el-button link type="primary" size="small">
-              查看全部通知
-              <font-awesome-icon icon="angle-right" />
-            </el-button>
-          </div>
         </div>
-      </div>
-
-
       </el-popover>
 
       <!-- 用户信息 -->
@@ -275,7 +282,10 @@ const userInfo = {
               <!-- <img :src="userInfo.avatar" alt="avatar">  -->
             </el-avatar>
             <div class="avatar-status" :class="{ online: userInfo.online }">
-              <font-awesome-icon :icon="userInfo.online ? 'circle' : 'circle-dot'" class="status-icon" />
+              <font-awesome-icon
+                :icon="userInfo.online ? 'circle' : 'circle-dot'"
+                class="status-icon"
+              />
             </div>
             <div class="avatar-ring"></div>
           </div>
@@ -291,10 +301,10 @@ const userInfo = {
           </div>
         </div>
         <template #dropdown>
-          <el-dropdown-menu class="user-dropdown" style="background-color: #1a1a1a;">
-          
-            
-        
+          <el-dropdown-menu
+            class="user-dropdown"
+            style="background-color: #1a1a1a"
+          >
             <el-dropdown-item command="profile">
               <div class="dropdown-item-content">
                 <font-awesome-icon icon="user" />
@@ -316,9 +326,11 @@ const userInfo = {
             </el-dropdown-item>
             <el-divider class="dropdown-divider" />
             <el-dropdown-item command="vip" class="vip-item">
-              <font-awesome-icon icon="crown" class="vip-icon" /> 
+              <font-awesome-icon icon="crown" class="vip-icon" />
               <span>开通会员</span>
-              <el-tag size="small" type="warning" class="vip-tag">限时优惠</el-tag>
+              <el-tag size="small" type="warning" class="vip-tag"
+                >限时优惠</el-tag
+              >
             </el-dropdown-item>
             <el-divider class="dropdown-divider" />
             <el-dropdown-item command="logout">
@@ -345,12 +357,15 @@ const userInfo = {
         <div class="theme-ripple"></div>
         <div class="theme-glow"></div>
       </div> -->
-      
     </div>
   </div>
 </template>
 
 <style scoped>
+.el-popper.is-light {
+  background-color: #1a1a1a;
+}
+
 /* 顶部导航基础样式 */
 .top-nav {
   height: 64px;
@@ -368,7 +383,7 @@ const userInfo = {
 .nav-left {
   display: flex;
   align-items: center;
-  margin: 0 32px;  /* 增加左右间距 */
+  margin: 0 32px; /* 增加左右间距 */
 }
 
 /* 路径显示容器样式优化 */
@@ -378,14 +393,14 @@ const userInfo = {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 8px 20px;  /* 增加内部间距 */
+  padding: 8px 20px; /* 增加内部间距 */
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  min-width: 180px;  /* 设置最小宽度 */
+  min-width: 180px; /* 设置最小宽度 */
   transition: all 0.3s ease;
-  
+
   &:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(76, 175, 80, 0.3);
@@ -399,24 +414,24 @@ const userInfo = {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;  /* 增加图标容器尺寸 */
+  width: 36px; /* 增加图标容器尺寸 */
   height: 36px;
   background: rgba(76, 175, 80, 0.1);
   border-radius: 10px;
-  flex-shrink: 0;  /* 防止图标被压缩 */
+  flex-shrink: 0; /* 防止图标被压缩 */
   transition: all 0.3s ease;
-  
+
   .nav-icon {
-    color: #4CAF50;
+    color: #4caf50;
     font-size: 18px;
     filter: drop-shadow(0 2px 4px rgba(76, 175, 80, 0.3));
     transition: transform 0.3s ease;
   }
-  
+
   &:hover {
     background: rgba(76, 175, 80, 0.15);
     transform: scale(1.05);
-    
+
     .nav-icon {
       transform: scale(1.1);
     }
@@ -428,7 +443,7 @@ const userInfo = {
   position: relative;
   overflow: hidden;
   padding: 4px 0;
-  flex: 1;  /* 让文字容器占据剩余空间 */
+  flex: 1; /* 让文字容器占据剩余空间 */
 }
 
 .path-text {
@@ -437,7 +452,7 @@ const userInfo = {
   font-weight: 500;
   white-space: nowrap;
   text-overflow: ellipsis;
-  max-width: none;  /* 移除最大宽度限制 */
+  max-width: none; /* 移除最大宽度限制 */
   display: block;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   letter-spacing: 0.5px;
@@ -457,9 +472,9 @@ const userInfo = {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 50%;
     left: 50%;
@@ -470,22 +485,22 @@ const userInfo = {
     transform: translate(-50%, -50%);
     transition: width 0.6s ease, height 0.6s ease;
   }
-  
+
   &:hover {
     transform: translateY(-2px);
     background: rgba(255, 255, 255, 0.05);
-    
+
     &::before {
       width: 300%;
       height: 300%;
     }
-    
+
     .nav-icon {
       transform: scale(1.1);
-      color: #4CAF50;
+      color: #4caf50;
     }
   }
-  
+
   &:active {
     transform: translateY(0);
   }
@@ -511,20 +526,20 @@ const userInfo = {
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  
+
   &:hover {
     background: rgba(255, 255, 255, 0.1);
     transform: translateY(-2px);
     border-color: rgba(76, 175, 80, 0.3);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    
+
     .dropdown-icon {
       transform: rotate(180deg);
     }
-    
+
     .user-avatar {
       transform: scale(1.05);
-      border-color: #4CAF50;
+      border-color: #4caf50;
     }
   }
 }
@@ -534,7 +549,7 @@ const userInfo = {
   position: relative;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  
+
   img {
     width: 100%;
     height: 100%;
@@ -549,7 +564,7 @@ const userInfo = {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: linear-gradient(45deg, #F7BA2A, #FFD700);
+  background: linear-gradient(45deg, #f7ba2a, #ffd700);
   border: 2px solid #2d2d2d;
   animation: pulse 2s infinite;
 }
@@ -568,12 +583,12 @@ const userInfo = {
 }
 
 .user-level {
-  color: #F7BA2A;
+  color: #f7ba2a;
   font-size: 12px;
   display: flex;
   align-items: center;
   gap: 4px;
-  
+
   .vip-icon {
     font-size: 12px;
     filter: drop-shadow(0 2px 4px rgba(247, 186, 42, 0.3));
@@ -587,9 +602,9 @@ const userInfo = {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   border-radius: 12px;
   overflow: hidden;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -611,7 +626,7 @@ const userInfo = {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+
   h3 {
     margin: 0;
     color: #e5e5e5;
@@ -620,13 +635,13 @@ const userInfo = {
     display: flex;
     align-items: center;
     gap: 8px;
-    
+
     &::before {
-      content: '';
+      content: "";
       display: block;
       width: 4px;
       height: 16px;
-      background: linear-gradient(to bottom, #4CAF50, #45a049);
+      background: linear-gradient(to bottom, #4caf50, #45a049);
       border-radius: 2px;
     }
   }
@@ -637,17 +652,17 @@ const userInfo = {
   overflow-y: auto;
   background: #1a1a1a;
   padding: 8px;
-  
+
   &::-webkit-scrollbar {
     width: 4px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   &::-webkit-scrollbar-thumb {
-    background: #4CAF50;
+    background: #4caf50;
     border-radius: 2px;
   }
 }
@@ -662,17 +677,17 @@ const userInfo = {
   margin-bottom: 8px;
   background: #1a1a1a;
   border: 1px solid transparent;
-  
+
   &:hover {
     background: rgba(76, 175, 80, 0.05);
     border-color: rgba(76, 175, 80, 0.1);
     transform: translateX(4px);
   }
-  
+
   &.unread {
     background: rgba(76, 175, 80, 0.02);
-    border-left: 3px solid #4CAF50;
-    
+    border-left: 3px solid #4caf50;
+
     .notification-icon {
       animation: pulse 2s infinite;
     }
@@ -690,21 +705,21 @@ const userInfo = {
   flex-shrink: 0;
   transition: all 0.3s ease;
   background: rgba(76, 175, 80, 0.1);
-  color: #4CAF50;
-  
+  color: #4caf50;
+
   &.success {
     background: rgba(76, 175, 80, 0.1);
-    color: #4CAF50;
+    color: #4caf50;
   }
-  
+
   &.info {
     background: rgba(64, 158, 255, 0.1);
-    color: #409EFF;
+    color: #409eff;
   }
-  
+
   &.warning {
     background: rgba(230, 162, 60, 0.1);
-    color: #E6A23C;
+    color: #e6a23c;
   }
 }
 
@@ -720,12 +735,12 @@ const userInfo = {
   display: flex;
   align-items: center;
   gap: 8px;
-  
+
   .unread-tag {
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 12px;
-    background: linear-gradient(45deg, #4CAF50, #45a049);
+    background: linear-gradient(45deg, #4caf50, #45a049);
     border: none;
   }
 }
@@ -751,21 +766,21 @@ const userInfo = {
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   text-align: center;
   background: #1a1a1a;
-  
+
   .el-button {
-    color: #4CAF50;
+    color: #4caf50;
     font-size: 13px;
-    
+
     &:hover {
       color: #45a049;
       transform: translateX(4px);
     }
-    
+
     .fa-icon {
       margin-left: 4px;
       transition: transform 0.3s ease;
     }
-    
+
     &:hover .fa-icon {
       transform: translateX(4px);
     }
@@ -777,20 +792,20 @@ const userInfo = {
   align-items: center;
   gap: 6px;
   transition: all 0.3s ease;
-  color: #4CAF50;
-  
+  color: #4caf50;
+
   .mark-icon {
     transition: transform 0.3s ease;
   }
-  
+
   &:not(:disabled):hover {
     color: #45a049;
-    
+
     .mark-icon {
       transform: rotate(-15deg) scale(1.2);
     }
   }
-  
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -802,13 +817,13 @@ const userInfo = {
   padding: 40px 20px;
   text-align: center;
   color: #666;
-  
+
   .fa-icon {
     font-size: 24px;
     margin-bottom: 12px;
     opacity: 0.5;
   }
-  
+
   p {
     margin: 0;
     font-size: 14px;
@@ -833,11 +848,11 @@ const userInfo = {
   .notification-panel {
     width: 300px;
   }
-  
+
   .notification-item {
     padding: 12px;
   }
-  
+
   .notification-icon {
     width: 36px;
     height: 36px;
